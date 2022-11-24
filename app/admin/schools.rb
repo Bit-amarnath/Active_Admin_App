@@ -1,10 +1,13 @@
 ActiveAdmin.register School do
 
-  permit_params :name, :student_number
+  permit_params :name, :school_number
   
-  # filter :name
+  filter :name
 
-  # menu label: "University"
+  # scope :all, default: true
+  # scope "institution", :name
+
+  menu label: "University"
 
   menu priority: 1
 
@@ -14,4 +17,25 @@ ActiveAdmin.register School do
   #   resource.lock!
   #   redirect_to lock_admin_school_path, notice: "Locked!"
   # end
+
+  index do
+    selectable_column
+    column :name
+  end
+  
+  index as: :grid do |school|
+    link_to school.name, admin_school_path(school)
+  end
+  
+  index as: :block do |school|
+    div for: school do
+      resource_selection_cell school
+      h2  auto_link     school.name
+    end
+  end
+
+  index as: :blog do
+    :name
+  end
+
 end
